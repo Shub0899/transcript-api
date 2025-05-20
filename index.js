@@ -27,7 +27,7 @@ app.post('/transcribe', async (req, res) => {
     const transcript = timestamped.map(u => u.text).join(' ');
 
     return res.status(200).json({ timestamped, transcript });
-  } catch (err: any) {
+  } catch (err) {
     console.error('Transcript error:', err.message);
     res.status(500).json({ error: err.message || 'Failed to fetch transcript' });
   }
