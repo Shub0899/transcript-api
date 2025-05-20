@@ -6,8 +6,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/transcribe', async (req, res) => {
-  const youtubeUrl = req.query.url;
+app.post('/transcribe', async (req, res) => {
+  const { url: youtubeUrl } = req.body;
 
   if (!youtubeUrl) return res.status(400).json({ error: 'Missing URL' });
 
@@ -27,9 +27,9 @@ app.get('/transcribe', async (req, res) => {
     const transcript = timestamped.map(u => u.text).join(' ');
 
     return res.status(200).json({ timestamped, transcript });
-  } catch (err) {
+  } catch (err: any) {
     console.error('Transcript error:', err.message);
-    res.status(500).json({ error: 'Failed to fetch transcript' });
+    res.status(500).json({ error: err.message || 'Failed to fetch transcript' });
   }
 });
 
